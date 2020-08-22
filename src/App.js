@@ -15,11 +15,29 @@ function App() {
   }, []);
 
   async function handleAddRepository() {
-    // TODO
+    const response = await api.post('repositories', {
+      title: `Desafio Conceitos ReactJS ${Date.now()}`,
+      url: "https://github.com/rpimpao/reactjs-concepts-challenge",
+      techs: ["ReactJS", "NodeJS"]
+    });
+
+    const repo = response.data;
+    setRepositories([...repositories, repo]);
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    const repoIndex = repositories.findIndex(entry => entry.id === id);
+
+    if (repoIndex >= 0) {
+      const response = await api.delete(`repositories/${id}`);
+
+      if (response.status === 204) {
+        // Successfully deleted on the BE
+        const repos = [...repositories];
+        repos.splice(repoIndex, 1);
+        setRepositories(repos);
+      }
+    }
   }
 
   return (
