@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import api from './services/api';
 
 import "./styles.css";
 
 function App() {
+  const [ repositories, setRepositories ] = useState([]);
+
+  // Get all repositories from BE when the Component is rendered on screen
+  useEffect(() => {
+    api.get('repositories').then(response => {
+      const repos = response.data;
+      setRepositories(repos);
+    });
+  }, []);
+
   async function handleAddRepository() {
     // TODO
   }
